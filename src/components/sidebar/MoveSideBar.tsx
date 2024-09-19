@@ -3,7 +3,7 @@ import { gameState } from "../store/boardState";
 import { userState } from "../store/userState";
 
 
-const MoveSideBar = () => {
+const MoveSideBar = ({ side }: { side: string }) => {
 	const state = useRecoilValue(gameState);
 	const user = useRecoilValue(userState);
 
@@ -22,8 +22,8 @@ const MoveSideBar = () => {
 	return (
 		<>
 			<div className=" p-4 flex flex-col justify-center invisible lg:visible">
-				<div className="bg-primary200 w-fit p-2 text-3xl">
-					<p>01:41</p>
+				<div className={`${side !== state.sideToMove[0] ? 'bg-primary' : 'bg-primary200'} w-fit p-2 text-3xl`}>
+					<p className="h-4 w-12"></p>
 				</div>
 				<div className="bg-primary200 p-2 h-2/3 flex flex-col">
 					<p className="text-end font-bold">{state.blackPlayer?.id === user?.id ? state.whitePlayer?.username : state.blackPlayer?.username}</p>
@@ -36,8 +36,8 @@ const MoveSideBar = () => {
 					</div>
 					<p className="text-end font-bold">{state.blackPlayer?.id === user?.id ? state.blackPlayer?.username : state.whitePlayer?.username}</p>
 				</div>
-				<div className="bg-primary200 w-fit p-2 text-3xl">
-					<p>01:21</p>
+				<div className={`${side === state.sideToMove[0] ? 'bg-primary' : 'bg-primary200'} w-fit p-2 text-3xl`}>
+					<p className="h-4 w-12"></p>
 				</div>
 			</div>
 		</>

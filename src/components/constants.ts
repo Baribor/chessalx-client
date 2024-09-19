@@ -11,6 +11,7 @@ export const ENDPOINTS = {
 	searchUsers: '/profile/search?',
 	requestGame: '/game/request',
 	acceptGame: '/game/accept',
+	resignGame: '/game/resign',
 }
 
 export const axiosInstance = axios.create({

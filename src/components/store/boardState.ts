@@ -9,5 +9,6 @@ export const gameState = atom<GameState>({
 		isGameOver: false,
 		fen: '',
 		pgn: '',
+		side: 'w',
 	},
 })

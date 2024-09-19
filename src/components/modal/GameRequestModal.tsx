@@ -2,20 +2,53 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Button } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { axiosInstance, ENDPOINTS, pusher } from '../constants';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { userState } from '../store/userState';
 import { Game } from '../types';
 import { getFullURL } from '../utils';
 import { gameState } from '../store/boardState';
 import { useNavigate } from 'react-router-dom';
+import { Chess } from 'chess.js';
 
 export default function GameRequestModal() {
-	const user = useRecoilValue(userState);
+	const [user, setUser] = useRecoilState(userState);
 	const [request, setRequest] = useState<Game>();
 	const setGameState = useSetRecoilState(gameState);
 	const navigate = useNavigate();
+
+	const getUserData = useCallback(async () => {
+		const token = localStorage.getItem('token');
+
+		if (token) {
+			const response = await axiosInstance.get(getFullURL(ENDPOINTS.getProfile), {
+				headers: {
+					Authorization: 'Bearer ' + token
+				}
+			});
+
+			if (response.data.status) {
+				setUser(response.data.data);
+				if (response.data.data.activeGame) {
+					const { id, pgn, fen, whitePlayerId, whitePlayer, blackPlayer } = response.data.data.activeGame;
+					const game = new Chess();
+					pgn ? game.loadPgn(pgn) : game.load(fen ?? "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+					setGameState((cur) => ({
+						...cur,
+						id: id,
+						moves: game.history(),
+						fen,
+						pgn,
+						sideToMove: whitePlayerId === response.data.data.id ? 'white' : 'black',
+						whitePlayer,
+						blackPlayer,
+					}));
+					navigate('/passNplay');
+				}
+			}
+		}
+	}, [])
 
 	const handleCancelRequest = () => {
 		setRequest(undefined);
@@ -51,6 +84,10 @@ export default function GameRequestModal() {
 		if (user) {
 			pusher.user.bind("game-request", (data: Game) => {
 				setRequest(data);
+			});
+
+			pusher.user.bind("request-accepted", () => {
+				getUserData();
 			});
 		}
 

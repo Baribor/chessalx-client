@@ -34,7 +34,7 @@ const MainLayout = () => {
 				if (response.data.data.activeGame) {
 					const { id, pgn, fen, whitePlayerId, whitePlayer, blackPlayer } = response.data.data.activeGame;
 					const game = new Chess();
-					pgn ? game.loadPgn(pgn) : game.load(fen);
+					pgn ? game.loadPgn(pgn) : game.load(fen ?? "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
 					setGameState((cur) => ({
 						...cur,
 						id: id,

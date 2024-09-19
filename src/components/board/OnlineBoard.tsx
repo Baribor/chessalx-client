@@ -6,9 +6,9 @@ import Chessboard from "chessboardjsx";
 import { calcWidth } from "../utils";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { gameState } from "../store/boardState";
-import UserSearchBoard from "../unit/UserSearchBoard";
 import { userState } from "../store/userState";
 import { useNavigate } from "react-router-dom";
+import MoveSideBar from "../sidebar/MoveSideBar";
 
 declare global {
 	interface Window {
@@ -76,7 +76,7 @@ const OnlineBoard: React.FC<Props> = () => {
 						position={fen}
 						calcWidth={calcWidth}
 						onDrop={onDrop}
-						orientation="black"
+						orientation="white"
 						boardStyle={{
 							borderRadius: "5px",
 							boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
@@ -84,7 +84,7 @@ const OnlineBoard: React.FC<Props> = () => {
 					/>
 				</div>
 			</div>
-			<UserSearchBoard />
+			<MoveSideBar side={game.turn().toString()} />
 		</div>
 
 	</>;

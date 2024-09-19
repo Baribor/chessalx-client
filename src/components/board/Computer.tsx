@@ -7,6 +7,7 @@ import { calcWidth } from "../utils";
 import { useSetRecoilState } from "recoil";
 import { gameState } from "../store/boardState";
 import MoveSideBar from "../sidebar/MoveSideBar";
+import { Button } from "@mui/material";
 
 declare global {
 	interface Window {
@@ -24,12 +25,18 @@ type Props = {
 const ComputerBoard: React.FC<Props> = () => {
 	const [fen, setFen] = useState("start");
 	const setGameState = useSetRecoilState(gameState);
+	const [gameOver, setGameOver] = useState(false);
+	const [playerSide, setPlayerSide] = useState("white")
+
 
 	useEffect(() => {
+		const randomBinary = Math.floor(Math.random() * 2);
+		const sides = ['white', 'black'];
+		setPlayerSide(sides[randomBinary])
 		setGameState({
 			isGameOver: false,
 			moves: [],
-			sideToMove: 'white',
+			sideToMove: sides[randomBinary],
 			whitePlayer: {
 				username: 'Computer',
 				id: '1'
@@ -77,7 +84,7 @@ const ComputerBoard: React.FC<Props> = () => {
 				: new Worker(options.stockfishjs || "./stockfish.js");
 		const engineStatus: any = {};
 		const time: any = { wtime: 3000, btime: 3000, winc: 1500, binc: 1500 };
-		const playerColor = "black";
+		const playerColor = playerSide;
 		let clockTimeoutID: ReturnType<typeof setTimeout> | null = null;
 		let announced_game_over = false;
 
@@ -239,23 +246,33 @@ const ComputerBoard: React.FC<Props> = () => {
 		};
 	}, []);
 
+	const handleResignClicked = () => {
+		setGameOver(true);
+	}
+
 	return <>
 		<div className="lg:grid lg:grid-cols-2 lg:grid-rows-1 h-full gap-4">
-			<div className="flex items-center justify-center mr-4 w-full">
+			<div className="flex items-center justify-center mr-4 w-full relative flex-col gap-4">
 				<div className="border-4 rounded-md border-red-900 w-fit">
 					<Chessboard
 						position={fen}
 						calcWidth={calcWidth}
 						onDrop={onDrop}
-						orientation="black"
+						orientation={playerSide as ('white' | 'black')}
 						boardStyle={{
 							borderRadius: "5px",
 							boxShadow: `0 5px 15px rgba(0, 0, 0, 0.5)`
 						}}
 					/>
+					{
+						(gameOver || game.isGameOver()) && <span className="absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] bg-primary text-white font-bold p-2 px-4 rounded-full z-20">Game Over</span>
+					}
+				</div>
+				<div>
+					<Button variant="contained" onClick={handleResignClicked}>Resign</Button>
 				</div>
 			</div>
-			<MoveSideBar />
+			<MoveSideBar side={game.turn().toString()} />
 		</div>
 
 	</>;

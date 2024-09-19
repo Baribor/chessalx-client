@@ -10,7 +10,8 @@ export interface ModalProps {
 
 export interface GameState {
 	moves: string[];
-	sideToMove: 'black' | 'white',
+	sideToMove: string,
+	side?: string,
 	isGameOver: boolean;
 	whitePlayer?: User;
 	blackPlayer?: User;
