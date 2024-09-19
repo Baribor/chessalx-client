@@ -1,35 +1,33 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import SearchIcon from '@mui/icons-material/Search';
 import { Link } from 'react-router-dom';
+import ProfileIcon from '../unit/ProfileIcon';
+import AuthButtons from '../unit/AuthButtons';
+import { useSetRecoilState } from 'recoil';
+import { modalState } from '../store/modalState';
+import { MODAL_TYPE } from '../constants';
 
 const Header = () => {
+	const setModal = useSetRecoilState(modalState);
+
+	const toggleModal = () => {
+		setModal({
+			type: MODAL_TYPE.startGame
+		})
+	}
 	return (
 		<>
-			<header className="tw-bg-primaryDark tw-flex tw-text-white tw-justify-between tw-w-full tw-items-center tw-h-[64px]">
-				<div className='tw-p-3'>
-					<Link to="/"><p className='tw-text-2xl tw-font-extrabold tw-font-[cursive] tw-text-white'>Chessalx</p></Link>
+			<header className="bg-primaryDark flex text-white justify-between w-full items-center h-[64px] z-10">
+				<div className='p-3'>
+					<Link to="/"><p className='text-2xl font-extrabold font-[cursive] text-white'>Chessalx</p></Link>
 				</div>
 
-				<div>
-					<div className='tw-bg-white tw-flex tw-rounded-full tw-pl-2 tw-w-[320px] tw-overflow-hidden'>
-						<input type="text" name="search" className='tw-outline-none tw-flex-grow tw-border-none' placeholder='enter username' />
-						<span className='tw-p-1 tw-cursor-pointer tw-bg-accent'>
-							<SearchIcon />
-						</span>
-					</div>
-				</div>
-				<div className='tw-flex tw-items-center tw-p-3 tw-gap-2'>
+				<div className='flex items-center p-3 gap-2'>
 					<div>
-						<span className='hover:tw-bg-primary200 tw-py-1 tw-px-6 hover:tw-rounded-full hover:tw-text-primaryDark tw-font-bold tw-cursor-pointer tw-duration-150 tw-text-xl'>Play</span>
+						<span className='hover:bg-primary200 py-1 px-6 hover:rounded-full hover:text-primaryDark font-bold cursor-pointer duration-150 text-xl' onClick={toggleModal}>Play</span>
 					</div>
-					<div className='tw-flex tw-gap-4'>
-						<Link to="/login" className='tw-rounded-full tw-py-1 tw-px-2 tw-bg-primary200 tw-text-primaryDark'>Login</Link>
-						<Link to="signup" className='tw-rounded-full tw-py-1 tw-px-2 tw-bg-primary200 tw-text-primaryDark'>Signup</Link>
+					<div className='flex gap-4'>
+						<AuthButtons />
 					</div>
-					<div className='tw-flex tw-items-center tw-gap-1'>
-						<Link to="/profile" className='tw-text-inherit'><AccountCircleIcon fontSize='large' /></Link>
-						<span>CurvsyDev</span>
-					</div>
+					<ProfileIcon />
 				</div>
 			</header>
 		</>

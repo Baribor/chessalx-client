@@ -11,14 +11,11 @@ export default {
         primaryDark: ' #481B01',
         primaryLight: '#A1794F',
         primary200: '#D7C5B4',
-        accent: '#FC4300'
+        accent: '#FC4300',
+        accentLight: '#FF9F7C',
       }
     },
   },
   plugins: [],
-  prefix: 'tw-',
-  corePlugins: {
-    preflight: false
-  }
 }
 
