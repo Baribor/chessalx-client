@@ -1,30 +1,90 @@
-# React + TypeScript + Vite
+# Chessalx Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Play. Learn. Compete.**
 
-Currently, two official plugins are available:
+Chessalx is a full-featured online chess platform built with React, TypeScript, and Vite. Whether you're a beginner learning the rules or a seasoned player looking to sharpen your skills, Chessalx provides multiple ways to enjoy the game.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- **Pass & Play** – Two players share the same device and take turns making moves on a single board.
+- **Online Play** – Challenge other registered users in real-time via WebSocket-powered matchmaking (Pusher).
+- **Play vs Computer** – Test your skills against an AI opponent.
+- **User Accounts** – Register and log in to save your profile and access online play.
+- **Live Demo Board** – The home page shows a random-vs-random game to give visitors an immediate feel for the app.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tech Stack
 
-- Configure the top-level `parserOptions` property like this:
+| Layer | Technology |
+|---|---|
+| UI framework | React 18 |
+| Language | TypeScript |
+| Build tool | Vite |
+| Styling | Tailwind CSS + Material UI (MUI) |
+| Chess logic | chess.js |
+| Chess board | chessboardjsx |
+| Real-time comms | Pusher.js |
+| State management | Recoil |
+| Routing | React Router v6 |
+| Forms & validation | Formik + Yup |
+| HTTP client | Axios |
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Getting Started
+
+### Prerequisites
+
+- Node.js ≥ 18
+- Yarn (recommended) or npm
+
+### Install dependencies
+
+```bash
+yarn install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Run in development mode
+
+```bash
+yarn dev
+```
+
+The app will be available at `http://localhost:5173` by default.
+
+### Build for production
+
+```bash
+yarn build
+```
+
+### Preview the production build
+
+```bash
+yarn preview
+```
+
+### Lint
+
+```bash
+yarn lint
+```
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── board/        # Chess board variants (PassNPlay, Online, Computer, RandomVsRandom)
+│   ├── layout/       # App shell / navigation layout
+│   ├── modal/        # Game-start and other modals
+│   ├── navigation/   # Top navigation bar
+│   ├── sidebar/      # Side panel components
+│   ├── store/        # Recoil atoms (user, modal state)
+│   ├── unit/         # Reusable UI units
+│   ├── constants.ts
+│   ├── interfaces.ts
+│   ├── types.ts
+│   └── utils.ts
+└── pages/
+    ├── Home.tsx
+    ├── Login.tsx
+    └── Signup.tsx
+```
